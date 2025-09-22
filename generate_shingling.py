@@ -1,20 +1,22 @@
-# generate_shingling.py
 """
 Generate shingles for a single city, window w, and λ, writing to the unified layout:
 
-  shingles/<City_State>/<w>/lam-<λ_label>/C-<version>.txt
+  shingles/<City_State>/<w>/lam-<lambda_label>/C-<version>.txt
 
-- Input: dumps/<City_State>/<City_State>_C-<version>.txt (plain text)
-- Output: One line per shingle, MD5 hex, integer-sorted ascending.
-- λ='inf' writes all shingles; finite λ keeps the first k lines (top-k).
+Input
+- dumps/<City_State>/<City_State>_C-<version>.txt (plain text)
 
-Usage:
-  python generate_shingling.py 25 dumps/New-York-City_NY --lambda inf
-  python generate_shingling.py 50 dumps/Miami_FL --lambda 32
+Output
+- One line per shingle (MD5 hex), integer-sorted ascending.
+- λ = 'inf' writes all shingles; finite λ writes the first k lines (top-k).
 
-Notes:
-  - Tokenization: lower().split() (whitespace), no punctuation stripping.
-  - If the page yields zero shingles (len(tokens) < w), an empty file is written.
+Usage
+- python generate_shingling.py 25 dumps/New-York-City_NY --lambda inf
+- python generate_shingling.py 50 dumps/Miami_FL --lambda 32
+
+Notes
+- Tokenization: lower().split() (whitespace), no punctuation stripping.
+- If len(tokens) < w, writes an empty file.
 """
 
 import argparse
@@ -24,12 +26,12 @@ import hashlib
 from collections import deque
 import struct
 import re
-
+from typing import Iterable, List
 
 FNAME_RE = re.compile(r"^(.+?)_(\w{2})_C-(\d+)\.txt$")
 
 
-def _md5_of_bytes_seq(seq) -> str:
+def _md5_of_bytes_seq(seq: Iterable[bytes]) -> str:
     """MD5 of a sequence of byte strings using length-prefixing."""
     h = hashlib.md5()
     for b in seq:
@@ -38,38 +40,29 @@ def _md5_of_bytes_seq(seq) -> str:
     return h.hexdigest()
 
 
-def sliding_window(tokens, w):
-    """
-    Create a set of window size tokens
-    tokens: list of strings
-    w: window size (int)
-    return: MD5 Hash of each window
-    """
+def sliding_window(tokens: List[str], w: int) -> List[str]:
+    """Return MD5 for each contiguous window of size w; sorted by integer value."""
     if w <= 0:
         raise ValueError("w must be positive")
     if len(tokens) < w:
         return []
 
-    queue = deque(maxlen=w)
-    out = []
+    queue: deque[bytes] = deque(maxlen=w)
+    out: List[str] = []
     for token in tokens:
-        token = token.encode("utf-8")
-        queue.append(token)
+        queue.append(token.encode("utf-8"))
         if len(queue) == w:
             out.append(_md5_of_bytes_seq(queue))
 
-    # Sort in asc order by magnitude not lexicographically
+    # Sort in ascending order by numeric magnitude (not lexicographic)
     out.sort(key=lambda x: int(x, 16))
     return out
 
 
 def process_file(
     infile: Path, w: int, lam_label: str, lam_k: int | float, outroot: Path
-):
-    """
-    Read dumps/<City_State>/<City_State>_C-<version>.txt and write shingles to:
-      shingles/<City_State>/<w>/lam-<lam_label>/C-<version>.txt
-    """
+) -> None:
+    """Read dumps/<City_State>/<City_State>_C-<version>.txt and write shingles to layout."""
     m = FNAME_RE.match(infile.name)
     if not m:
         print(f"[WARN] Skipping {infile.name}, filename does not match schema")
@@ -82,15 +75,12 @@ def process_file(
     tokens = text.split()
     shingles = sliding_window(tokens, w)
 
-    # take top-k or all
+    # Select top-k or all
     if lam_k is math.inf:
         selected = shingles
     else:
         k = int(lam_k)
-        if k <= 0:
-            selected = []
-        else:
-            selected = shingles[:k]
+        selected = shingles[:k] if k > 0 else []
 
     outdir = outroot / city_state / str(w) / f"lam-{lam_label}"
     outdir.mkdir(parents=True, exist_ok=True)
@@ -103,24 +93,26 @@ def process_file(
     print(f"[INFO] Wrote {len(selected):6d} shingles -> {outfile}")
 
 
-def main():
-    ap = argparse.ArgumentParser(
+def _parse_cli() -> tuple[int, Path, str, int | float, Path]:
+    parser = argparse.ArgumentParser(
         description="Generate word-level shingles for a given w and λ into lam-* folders."
     )
-    ap.add_argument("w", type=int, help="Window size, e.g., 25 or 50")
-    ap.add_argument(
-        "indir", help="City directory containing text files (e.g., dumps/Detroit_MI)"
+    parser.add_argument("w", type=int, help="Window size, e.g., 25 or 50")
+    parser.add_argument(
+        "indir", help="City directory with text files (e.g., dumps/Detroit_MI)"
     )
-    ap.add_argument(
+    parser.add_argument(
         "--lambda",
         dest="lam",
         required=True,
         help="λ as positive int or 'inf' to store all shingles",
     )
-    ap.add_argument("--outroot", default="shingles", help="Root of output directory")
-    args = ap.parse_args()
+    parser.add_argument(
+        "--outroot", default="shingles", help="Root of output directory"
+    )
+    args = parser.parse_args()
 
-    # parse λ
+    # Parse λ
     if str(args.lam).lower() in ("inf", "infty", "infinite"):
         lam_k = math.inf
         lam_label = "inf"
@@ -137,10 +129,15 @@ def main():
         )
 
     outroot = Path(args.outroot)
+    return args.w, indir, lam_label, lam_k, outroot
+
+
+def main() -> None:
+    w, indir, lam_label, lam_k, outroot = _parse_cli()
 
     # Process each dump file for this city
     for f in sorted(p for p in indir.iterdir() if p.is_file() and p.suffix == ".txt"):
-        process_file(f, args.w, lam_label, lam_k, outroot)
+        process_file(f, w, lam_label, lam_k, outroot)
 
 
 if __name__ == "__main__":

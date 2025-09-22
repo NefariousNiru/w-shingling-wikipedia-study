@@ -104,7 +104,9 @@ def _derive_lam_from_inf_for_city(w: int, lam_k: int, city_name: str):
     for f in sorted(inf_dir.glob("C-*.txt")):
         out_f = out_dir / f.name
         wrote = 0
-        with f.open("r", encoding="utf-8") as src, out_f.open("w", encoding="utf-8") as dst:
+        with f.open("r", encoding="utf-8") as src, out_f.open(
+            "w", encoding="utf-8"
+        ) as dst:
             for i, line in enumerate(src):
                 if i >= lam_k:
                     break
@@ -117,7 +119,9 @@ def _derive_lam_from_inf_for_city(w: int, lam_k: int, city_name: str):
 def _write_results_csv(csv_path, results):
     with open(csv_path, "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["w", "lambda", "run1", "run2", "run3", "mean", "std", "min", "max"])
+        writer.writerow(
+            ["w", "lambda", "run1", "run2", "run3", "mean", "std", "min", "max"]
+        )
         for row in results:
             writer.writerow(
                 [
