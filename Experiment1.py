@@ -87,7 +87,7 @@ def call_generator_or_fail(w: int, lam_label: str) -> Path:
         print("\n[ERROR] Failed to compute Jaccard similarities.")
         print("Likely cause: shingles are missing for some (city, w, λ, version).")
         print("Populate shingles with the optimized generator:")
-        print("  python Experiment3.py dumps --generate")
+        print("  python Experiment3.py dumps/ --generate")
         sys.exit(2)
 
     if not out_csv.exists():

@@ -26,6 +26,7 @@ import csv
 DUMPS_DIR = "dumps"
 SHINGLES_DIR = "shingles"
 RESULTS_DIR = "results"
+JACCARD_DIR = "jaccard"
 
 CITY_DIR_NAME_RE = re.compile(r"^(.+?)_(\w{2})$")
 DUMP_FILE_RE = re.compile(r"^(.+?)_(\w{2})_C-(\d+)\.txt$")
@@ -35,7 +36,7 @@ def _runtime_missing(city: str, w: int, lam_label: str, version: int) -> None:
     raise RuntimeError(
         (
             f"Shingles not generated for {city}, w={w}, λ={lam_label}, version C-{version}. "
-            f"Generate them first using Experiment3.py."
+            f"Generate them first using `python Experiment3.py dumps/ --generate`."
         )
     )
 
@@ -114,7 +115,7 @@ def main() -> None:
     ap.add_argument(
         "--out",
         default=None,
-        help="Output CSV path. Default results/jaccard_w-{w}_lam-{lambda_label}.csv",
+        help="Output CSV path. Default jaccard/w-{w}_lam-{lambda_label}.csv",
     )
     args = ap.parse_args()
 
@@ -129,9 +130,7 @@ def main() -> None:
     shingles_root = Path(args.shingles_root)
 
     out_path = (
-        Path(args.out)
-        if args.out
-        else Path(RESULTS_DIR) / f"jaccard_w-{w}_lam-{lam_label}.csv"
+        Path(args.out) if args.out else Path(JACCARD_DIR) / f"w-{w}_lam-{lam_label}.csv"
     )
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
