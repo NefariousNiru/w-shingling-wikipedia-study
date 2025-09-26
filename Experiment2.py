@@ -34,7 +34,7 @@ LAMBDAS = ["8", "16", "32", "64", "inf"]
 
 # Locations
 JACCARD_ROOT = Path("jaccard")
-RESULTS_DIR = Path("results")
+RESULTS_DIR = Path("results") / "exp2"
 
 
 def _csv_path(w: int, lam: str) -> Path:
@@ -131,8 +131,9 @@ def _plot_city_w(
     plt.legend(title="λ", frameon=True)
     plt.tight_layout()
 
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    outpath = RESULTS_DIR / f"exp2_city-{_safe_name(city)}_w-{w}.png"
+    city_dir = RESULTS_DIR / _safe_name(city)
+    city_dir.mkdir(parents=True, exist_ok=True)
+    outpath = city_dir / f"w-{w}.png"
     plt.savefig(outpath, dpi=150)
     plt.close()
     print(f"[INFO] Wrote plot -> {outpath}")

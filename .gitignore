@@ -3,3 +3,4 @@ dumps/*
 shingles/*
 jaccard/*
 .idea
+results/exp2/*
