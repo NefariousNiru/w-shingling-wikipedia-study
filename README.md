@@ -19,8 +19,18 @@ Given multiple versions of Wikipedia city pages, we:
 
 This pipeline provides both **quantitative measures** (Jaccard scores, timing data) and **visual insight** (plots of similarity across versions and parameter settings).
 
----
 
+---
+## Dependencies
+
+- Python 3.12
+- Matplotlib
+- beautifulsoup4 is web scraping
+
+```bash
+  pip install matplotlib  
+```
+---
 ## Repository Structure
 
 ```
