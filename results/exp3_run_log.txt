@@ -1,0 +1,70 @@
+
+[RUN] Starting timed run for w=25, λ=8
+[DONE] Run 1/4 -> 297.92 s
+[DONE] Run 2/4 -> 298.30 s
+[DONE] Run 3/4 -> 297.57 s
+[DONE] Run 4/4 -> 298.26 s
+[RESULT] w=25, λ=8 -> mean=298.04s (std=0.33, min=297.57, max=298.30)
+
+[RUN] Starting timed run for w=25, λ=16
+[DONE] Run 1/4 -> 299.54 s
+[DONE] Run 2/4 -> 299.07 s
+[DONE] Run 3/4 -> 298.34 s
+[DONE] Run 4/4 -> 299.24 s
+[RESULT] w=25, λ=16 -> mean=298.88s (std=0.39, min=298.34, max=299.24)
+
+[RUN] Starting timed run for w=25, λ=32
+[DONE] Run 1/4 -> 299.50 s
+[DONE] Run 2/4 -> 300.01 s
+[DONE] Run 3/4 -> 299.84 s
+[DONE] Run 4/4 -> 299.52 s
+[RESULT] w=25, λ=32 -> mean=299.79s (std=0.20, min=299.52, max=300.01)
+
+[RUN] Starting timed run for w=25, λ=64
+[DONE] Run 1/4 -> 300.07 s
+[DONE] Run 2/4 -> 299.50 s
+[DONE] Run 3/4 -> 299.34 s
+[DONE] Run 4/4 -> 299.01 s
+[RESULT] w=25, λ=64 -> mean=299.28s (std=0.21, min=299.01, max=299.50)
+
+[RUN] Starting timed run for w=25, λ=inf
+[DONE] Run 1/4 -> 315.86 s
+[DONE] Run 2/4 -> 309.45 s
+[DONE] Run 3/4 -> 311.18 s
+[DONE] Run 4/4 -> 310.90 s
+[RESULT] w=25, λ=inf -> mean=310.51s (std=0.76, min=309.45, max=311.18)
+
+[RUN] Starting timed run for w=50, λ=8
+[DONE] Run 1/4 -> 511.68 s
+[DONE] Run 2/4 -> 512.68 s
+[DONE] Run 3/4 -> 511.10 s
+[DONE] Run 4/4 -> 511.45 s
+[RESULT] w=50, λ=8 -> mean=511.74s (std=0.68, min=511.10, max=512.68)
+
+[RUN] Starting timed run for w=50, λ=16
+[DONE] Run 1/4 -> 509.72 s
+[DONE] Run 2/4 -> 514.12 s
+[DONE] Run 3/4 -> 516.27 s
+[DONE] Run 4/4 -> 512.54 s
+[RESULT] w=50, λ=16 -> mean=514.31s (std=1.53, min=512.54, max=516.27)
+
+[RUN] Starting timed run for w=50, λ=32
+[DONE] Run 1/4 -> 512.37 s
+[DONE] Run 2/4 -> 513.52 s
+[DONE] Run 3/4 -> 511.47 s
+[DONE] Run 4/4 -> 512.46 s
+[RESULT] w=50, λ=32 -> mean=512.48s (std=0.83, min=511.47, max=513.52)
+
+[RUN] Starting timed run for w=50, λ=64
+[DONE] Run 1/4 -> 514.58 s
+[DONE] Run 2/4 -> 512.43 s
+[DONE] Run 3/4 -> 510.51 s
+[DONE] Run 4/4 -> 513.13 s
+[RESULT] w=50, λ=64 -> mean=512.02s (std=1.11, min=510.51, max=513.13)
+
+[RUN] Starting timed run for w=50, λ=inf
+[DONE] Run 1/4 -> 530.00 s
+[DONE] Run 2/4 -> 531.31 s
+[DONE] Run 3/4 -> 528.88 s
+[DONE] Run 4/4 -> 529.66 s
+[RESULT] w=50, λ=inf -> mean=529.95s (std=1.01, min=528.88, max=531.31)
