@@ -7,7 +7,7 @@ Build A4 contact sheets for Experiment 2 plots.
 - Order: cities alphabetical
 - Layout per page: 4 rows x 2 cols = 4 cities per page
   Each row: [w-25.png | w-50.png] for the same city
-- Output: results/exp2/exp2_contact_sheets.pdf
+- Output: results/exp2/exp2_combined_plots.pdf
 """
 
 import math
@@ -17,7 +17,7 @@ from PIL import Image, ImageDraw
 
 # Config
 BASE = Path("results") / "exp2"
-OUT_PDF = Path("results") / "exp2_contact_sheets.pdf"
+OUT_PDF = Path("results") / "exp2_combined_plots.pdf"
 
 # A4 portrait at 300 DPI in pixels
 A4_W, A4_H = 2480, 3508
