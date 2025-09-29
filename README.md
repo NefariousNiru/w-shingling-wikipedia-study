@@ -26,6 +26,7 @@ This pipeline provides both **quantitative measures** (Jaccard scores, timing da
 - Python 3.12
 - Matplotlib
 - beautifulsoup4 is web scraping
+- [Get Dataset Here](https://drive.google.com/file/d/175NWyhgpCd-pHcyo3nbieTFzO1P8dO6a/view?usp=sharing)
 
 ```bash
   pip install matplotlib  
