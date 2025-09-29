@@ -117,7 +117,7 @@ def _derive_lam_from_inf_for_city(w: int, lam_k: int, city_name: str):
 
 
 def _write_results_csv(csv_path, results):
-    with open(csv_path, "w", newline="") as f:
+    with open(csv_path, "w", newline="", encoding="utf-8-sig") as f:
         writer = csv.writer(f)
         writer.writerow(
             ["w", "lambda", "run1", "run2", "run3", "mean", "std", "min", "max"]
@@ -213,9 +213,16 @@ def _run_timed_mode(cities: list[Path]) -> None:
     timings: dict[int, list[tuple[float, float, float]]] = {}
     all_results: list[dict] = []
 
+    LOG_PATH = RESULT_DIR / "exp3_run_log.txt"
+    def log(msg: str):
+        print(msg)  # console
+        with open(LOG_PATH, "a", encoding="utf-8") as f:
+            f.write(msg + "\n")
+
+
     for w, lam in PAIRS:
         label = _lam_label(lam)
-        print(f"\n[RUN] Starting timed run for w={w}, λ={label}")
+        log(f"\n[RUN] Starting timed run for w={w}, λ={label}")
         run_times: list[float] = []
         num_runs = 4  # 1 warmup + 3 measured
 
@@ -232,7 +239,7 @@ def _run_timed_mode(cities: list[Path]) -> None:
             elapsed = time.perf_counter() - start
             if not is_warmup:
                 run_times.append(elapsed)
-            print(f"[DONE] Run {run+1}/{num_runs} -> {elapsed:.2f} s")
+            log(f"[DONE] Run {run+1}/{num_runs} -> {elapsed:.2f} s")
 
         mean_time = statistics.mean(run_times)
         std_time = statistics.pstdev(run_times) if len(run_times) > 1 else 0.0
@@ -250,7 +257,7 @@ def _run_timed_mode(cities: list[Path]) -> None:
                 "max": max_time,
             }
         )
-        print(
+        log(
             f"[RESULT] w={w}, λ={label} -> mean={mean_time:.2f}s (std={std_time:.2f}, min={min_time:.2f}, max={max_time:.2f})"
         )
 
